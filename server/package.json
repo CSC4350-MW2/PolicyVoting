@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon --watch routes/ --watch controllers/ --watch db/ app.js"
   },
   "author": "",
   "license": "ISC",

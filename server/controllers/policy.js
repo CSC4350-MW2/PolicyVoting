@@ -35,7 +35,6 @@ const getPolicy = async (req, res) => {
 };
 
 const getAllPolicies = async (req, res) => {
-  const policiesRef = db.collection("policies");
   try {
     const policies = [];
     const policiesRef = db.collection("policies");
