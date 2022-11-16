@@ -1,4 +1,6 @@
 const db = require("../db/connect");
+const firebase = require("firebase");
+
 const { StatusCodes } = require("http-status-codes");
 
 const addPolicy = async (req, res) => {
@@ -8,7 +10,8 @@ const addPolicy = async (req, res) => {
       .add({
         title,
         description,
-        votes: 0, // Default is 0 votes
+        accept: 0, // Default is 0
+        reject: 0, // Default is 0
         status: "CURRENT", // Default is "CURRENT" status
       })
       .then((docRef) => {
@@ -28,6 +31,32 @@ const getPolicy = async (req, res) => {
     if (policy.data() == null) throw Error();
     res.status(StatusCodes.OK).json({ success: true, data: policy.data() });
   } catch (err) {
+    res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ success: false, message: "Policy not found." });
+  }
+};
+
+const votePolicy = async (req, res) => {
+  const pol_id = req.params.id;
+  const { vote } = req.body;
+  try {
+    const policy = db.collection("policies").doc(pol_id);
+    // if (policy.data() == null) throw Error();
+
+    if (vote == "accept") {
+      const result = await policy.update({
+        accept: firebase.firestore.FieldValue.increment(1),
+      });
+    } else if (vote == "reject") {
+      const result = await policy.update({
+        reject: firebase.firestore.FieldValue.increment(1),
+      });
+    }
+    const data = await policy.get();
+    res.status(StatusCodes.OK).json({ success: true, data: data.data() });
+  } catch (err) {
+    console.log(err);
     res
       .status(StatusCodes.NOT_FOUND)
       .json({ success: false, message: "Policy not found." });
@@ -84,4 +113,5 @@ module.exports = {
   getCurrentPolicies,
   getPolicy,
   getHistory,
+  votePolicy,
 };
