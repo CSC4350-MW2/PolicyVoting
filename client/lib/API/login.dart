@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
-var host_url = '172.21.113.164:3000';
+var host_url = '';
 
 userLogin(String username, String password) async {
   var url = Uri.http(host_url, '/login');
