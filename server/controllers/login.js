@@ -2,6 +2,7 @@ const db = require("../db/connect.js");
 const { StatusCodes } = require("http-status-codes");
 
 const login = async (req, res) => {
+  console.log("Login Request received.");
   const { username, password } = req.body;
   try {
     const users = [];
