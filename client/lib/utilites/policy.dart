@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
-var host_url = ''; 
+var host_url = '10.0.2.2:3000';
 
 getCurrentPolicies() async {
   var url = Uri.http(host_url, '/policy/current');
