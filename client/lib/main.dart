@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(title: 'Policy Voter: Login Page'),
+      home: LoginPage(title: 'Login Page'),
     );
   }
 }

@@ -7,15 +7,11 @@ var host_url = '10.0.2.2:3000';
 
 getCurrentPolicies() async {
   var url = Uri.http(host_url, '/policy/current');
-
-  print('Request all current policies');
-
   var response =
       await http.get(url, headers: {"Content-Type": "application/json"});
 
-  print("Response status code: ${response.statusCode}");
-  print("Response data: ${response.body}");
-  return response;
+  var data = jsonDecode(response.body);
+  return data['data'];
 }
 
 getCompletedPolicies() async {}
