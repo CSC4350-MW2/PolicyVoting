@@ -121,22 +121,23 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   signOn(BuildContext context) async {
-    print("Login Pressed");
     if (_formKey.currentState!.validate()) {
       var response = await userLogin(_userID.text, _passwordID.text);
-      print("Response: ${response}");
-      if (response.toString() == '200') {
-        response = await getCurrentPolicies();
-        print("Response: ${response}");
+      if (response.statusCode == 200) {
+        var policies = await getCurrentPolicies();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text("Log-in Success", style: stylesheet.subtext),
             backgroundColor: stylesheet.buttons));
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => PolicyScreen(
-                      title: "Policy Voter: Policy Page",
-                    )));
+                builder: (context) =>
+                    HomeScreen(title: "Home Page", policies: policies)));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("Incorrect username or password",
+                style: stylesheet.subtext),
+            backgroundColor: stylesheet.buttons));
       }
     }
   }

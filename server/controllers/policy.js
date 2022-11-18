@@ -38,8 +38,7 @@ const getPolicy = async (req, res) => {
 };
 
 const votePolicy = async (req, res) => {
-  const pol_id = req.params.id;
-  const { vote } = req.body;
+  const { pol_id, vote } = req.body;
   try {
     const policy = db.collection("policies").doc(pol_id);
     // if (policy.data() == null) throw Error();
@@ -85,7 +84,8 @@ const getCurrentPolicies = async (req, res) => {
     const policiesRef = db.collection("policies");
     const snapshot = await policiesRef.where("status", "==", "CURRENT").get();
     snapshot.forEach((policy) => {
-      policies.push(policy.data());
+      const new_policy = {pol_id: policy.id,...policy.data()}
+      policies.push(new_policy);
     });
     res.status(StatusCodes.OK).json({ success: true, data: policies });
   } catch (err) {
