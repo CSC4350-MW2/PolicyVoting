@@ -4,9 +4,14 @@ import 'package:client/style.dart';
 import '../utilites/policy.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key, required this.title, required this.policies});
+  HomeScreen(
+      {super.key,
+      required this.title,
+      required this.userData,
+      required this.policies});
 
   final String title;
+  final Map userData;
   final List policies;
 
   @override
@@ -36,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => PolicyScreen(
+                              userData: widget.userData,
                               pol_id: policy['pol_id'],
                               title: policy['title'],
                               description: policy['description'])));

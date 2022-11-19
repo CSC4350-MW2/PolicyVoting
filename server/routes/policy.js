@@ -12,7 +12,7 @@ const {
 router.route("/").post(addPolicy);
 router.route("/").get(getAllPolicies);
 router.route("/history").get(getHistory);
-router.route("/current").get(getCurrentPolicies);
+router.route("/current/:userId").get(getCurrentPolicies);
 router.route("/:id").get(getPolicy);
 router.route("/vote").post(votePolicy);
 
