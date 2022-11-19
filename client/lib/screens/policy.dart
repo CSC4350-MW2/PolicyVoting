@@ -12,6 +12,7 @@ class PolicyScreen extends StatefulWidget {
   final String pol_id;
   final String title;
   final String description;
+  String vote = "None";
 
   @override
   State<PolicyScreen> createState() => _PolicyScreenState();
@@ -29,7 +30,46 @@ class _PolicyScreenState extends State<PolicyScreen> {
         backgroundColor: stylesheet.buttons,
         title: Text(widget.title),
       ),
-      body: Center(child: Text(widget.description)),
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Card(child: Text(widget.description)),
+          ButtonBar(children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+              ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+              onPressed: () {
+                widget.vote = "Accept";
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40)),
+                          insetPadding: EdgeInsets.zero,
+                          elevation: 16,
+                          child: Text("Are you sure you want to ACCEPT?"));
+                    });
+              },
+              child: const Text('Accept'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+              ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+              onPressed: () {
+                widget.vote = "Reject";
+                print(widget.vote);
+              },
+              child: const Text('Reject'),
+            ),
+          ]),
+        ],
+      ),
     );
   }
 }
