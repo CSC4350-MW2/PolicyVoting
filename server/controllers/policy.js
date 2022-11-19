@@ -38,12 +38,13 @@ const getPolicy = async (req, res) => {
 };
 
 const votePolicy = async (req, res) => {
-  const { pol_id, vote } = req.body;
+  const { pol_id, vote, userId } = req.body;
   console.log("Policy Vote received.");
   try {
-    const policy = db.collection("policies").doc(pol_id);
+    // Get user
+    const user = await db.collection("users").doc(userId);
+    const policy = await db.collection("policies").doc(pol_id);
     // if (policy.data() == null) throw Error();
-    console.log(`Vote: ${vote}`);
 
     if (vote == "accept") {
       const result = await policy.update({
@@ -54,6 +55,10 @@ const votePolicy = async (req, res) => {
         reject: firebase.firestore.FieldValue.increment(1),
       });
     }
+    user.update({
+      policies: firebase.firestore.FieldValue.arrayUnion(pol_id),
+    });
+
     const data = await policy.get();
     res.status(StatusCodes.OK).json({ success: true, data: data.data() });
   } catch (err) {
@@ -81,16 +86,25 @@ const getAllPolicies = async (req, res) => {
 };
 
 const getCurrentPolicies = async (req, res) => {
+  console.log("Get current policies");
+  const { userId } = req.params;
+  console.log(`user id: ${userId}`);
   try {
-    const policies = [];
+    const user = await db.collection("users").doc(userId).get();
+    const userPolices = Object.values(user.data().policies);
+    console.log(userPolices);
+    policies = [];
     const policiesRef = db.collection("policies");
     const snapshot = await policiesRef.where("status", "==", "CURRENT").get();
     snapshot.forEach((policy) => {
-      const new_policy = { pol_id: policy.id, ...policy.data() };
-      policies.push(new_policy);
+      if (!userPolices.includes(policy.id)) {
+        const new_policy = { pol_id: policy.id, ...policy.data() };
+        policies.push(new_policy);
+      }
     });
     res.status(StatusCodes.OK).json({ success: true, data: policies });
   } catch (err) {
+    console.log(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ success: false });
   }
 };

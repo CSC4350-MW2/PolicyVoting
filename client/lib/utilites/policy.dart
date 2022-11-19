@@ -5,8 +5,9 @@ import 'package:http/http.dart' as http;
 
 var host_url = '10.0.2.2:3000';
 
-getCurrentPolicies() async {
-  var url = Uri.http(host_url, '/policy/current');
+getCurrentPolicies(var userData) async {
+  print('User data: ${userData}');
+  var url = Uri.http(host_url, '/policy/current/${userData['userId']}');
   var response =
       await http.get(url, headers: {"Content-Type": "application/json"});
 
@@ -14,9 +15,9 @@ getCurrentPolicies() async {
   return data['data'];
 }
 
-votePolicy(String pol_id, String vote) async {
+votePolicy(String pol_id, String vote, Map userData) async {
   var url = Uri.http(host_url, '/policy/vote');
-  Map data = {'pol_id': pol_id, 'vote': vote};
+  Map data = {'userId': userData['userId'], 'pol_id': pol_id, 'vote': vote};
 
   // Encode data to JSON
   var body = json.encode(data);

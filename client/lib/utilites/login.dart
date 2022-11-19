@@ -15,5 +15,11 @@ userLogin(String username, String password) async {
   var response = await http.post(url,
       headers: {"Content-Type": "application/json"}, body: body);
 
-  return response;
+  Map userData = {'userId': "None", "policies": []};
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body)['data'];
+    userData['userId'] = data['userId'];
+    userData['policies'] = data['policies'];
+  }
+  return userData;
 }

@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:client/style.dart';
 import 'package:http/http.dart';
 import '../utilites/policy.dart';
+import 'package:client/screens/home.dart';
 
 class PolicyScreen extends StatefulWidget {
   PolicyScreen(
       {super.key,
+      required this.userData,
       required this.pol_id,
       required this.title,
       required this.description});
 
+  final Map userData;
   final String pol_id;
   final String title;
   final String description;
@@ -44,7 +47,8 @@ class _PolicyScreenState extends State<PolicyScreen> {
               ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
               onPressed: () {
                 widget.vote = "accept";
-                confirmVote(context, widget.pol_id, widget.vote);
+                confirmVote(
+                    context, widget.pol_id, widget.vote, widget.userData);
               },
               child: const Text('Accept'),
             ),
@@ -55,7 +59,8 @@ class _PolicyScreenState extends State<PolicyScreen> {
               ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
               onPressed: () {
                 widget.vote = "reject";
-                confirmVote(context, widget.pol_id, widget.vote);
+                confirmVote(
+                    context, widget.pol_id, widget.vote, widget.userData);
               },
               child: const Text('Reject'),
             ),
@@ -66,7 +71,8 @@ class _PolicyScreenState extends State<PolicyScreen> {
   }
 }
 
-void confirmVote(BuildContext context, String pol_id, String vote) {
+void confirmVote(
+    BuildContext context, String pol_id, String vote, Map userData) {
   showDialog(
       context: context,
       builder: (context) {
@@ -75,10 +81,10 @@ void confirmVote(BuildContext context, String pol_id, String vote) {
           actions: [
             ElevatedButton(
                 onPressed: () async {
-                  Response response = await votePolicy(pol_id, vote);
+                  Response response = await votePolicy(pol_id, vote, userData);
                   Navigator.of(context).pop();
                   if (response.statusCode == 200) {
-                    showConfirmation(context, vote);
+                    showConfirmation(context, vote, userData);
                   }
                 },
                 child: const Text('Yes')),
@@ -92,7 +98,7 @@ void confirmVote(BuildContext context, String pol_id, String vote) {
       });
 }
 
-void showConfirmation(BuildContext context, String vote) {
+void showConfirmation(BuildContext context, String vote, Map userData) {
   showDialog(
       context: context,
       builder: (context) {
@@ -100,8 +106,16 @@ void showConfirmation(BuildContext context, String vote) {
           title: const Text('Vote submitted.'),
           actions: [
             TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
+                onPressed: () async {
+                  // Navigator.of(context).pop();
+                  var policies = await getCurrentPolicies(userData);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomeScreen(
+                              title: "Home Page",
+                              userData: userData,
+                              policies: policies)));
                 },
                 child: const Text('Ok')),
           ],
