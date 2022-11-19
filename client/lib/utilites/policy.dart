@@ -14,6 +14,19 @@ getCurrentPolicies() async {
   return data['data'];
 }
 
+votePolicy(String pol_id, String vote) async {
+  var url = Uri.http(host_url, '/policy/vote');
+  Map data = {'pol_id': pol_id, 'vote': vote};
+
+  // Encode data to JSON
+  var body = json.encode(data);
+
+  var response = await http.post(url,
+      headers: {"Content-Type": "application/json"}, body: body);
+
+  return response;
+}
+
 getCompletedPolicies() async {}
 
 postPolicy() async {}

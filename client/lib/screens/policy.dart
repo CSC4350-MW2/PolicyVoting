@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:client/style.dart';
+import 'package:http/http.dart';
 import '../utilites/policy.dart';
 
 class PolicyScreen extends StatefulWidget {
@@ -42,17 +43,8 @@ class _PolicyScreenState extends State<PolicyScreen> {
                 backgroundColor: Theme.of(context).colorScheme.primary,
               ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
               onPressed: () {
-                widget.vote = "Accept";
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return Dialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(40)),
-                          insetPadding: EdgeInsets.zero,
-                          elevation: 16,
-                          child: Text("Are you sure you want to ACCEPT?"));
-                    });
+                widget.vote = "accept";
+                confirmVote(context, widget.pol_id, widget.vote);
               },
               child: const Text('Accept'),
             ),
@@ -62,8 +54,8 @@ class _PolicyScreenState extends State<PolicyScreen> {
                 backgroundColor: Theme.of(context).colorScheme.primary,
               ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
               onPressed: () {
-                widget.vote = "Reject";
-                print(widget.vote);
+                widget.vote = "reject";
+                confirmVote(context, widget.pol_id, widget.vote);
               },
               child: const Text('Reject'),
             ),
@@ -72,4 +64,47 @@ class _PolicyScreenState extends State<PolicyScreen> {
       ),
     );
   }
+}
+
+void confirmVote(BuildContext context, String pol_id, String vote) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Are you sure you want to ${vote}?'),
+          actions: [
+            ElevatedButton(
+                onPressed: () async {
+                  Response response = await votePolicy(pol_id, vote);
+                  Navigator.of(context).pop();
+                  if (response.statusCode == 200) {
+                    showConfirmation(context, vote);
+                  }
+                },
+                child: const Text('Yes')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('No'))
+          ],
+        );
+      });
+}
+
+void showConfirmation(BuildContext context, String vote) {
+  showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Vote submitted.'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Ok')),
+          ],
+        );
+      });
 }
