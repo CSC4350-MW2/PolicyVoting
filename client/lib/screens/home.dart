@@ -1,6 +1,7 @@
 import 'package:client/screens/policy.dart';
 import 'package:flutter/material.dart';
 import 'package:client/style.dart';
+import 'package:client/screens/propose.dart';
 import '../utilites/policy.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,6 +31,23 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Color.fromARGB(255, 49, 98, 222),
         title: Text(widget.title),
         automaticallyImplyLeading: false,
+        actions: <Widget>[
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProposeScreen(
+                            userData: widget.userData,
+                          )));
+            },
+            child: Text("Propose"),
+            style: ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll<Color>(
+                  Color.fromARGB(255, 0, 88, 160)),
+            ),
+          )
+        ],
       ),
       body: Center(
           child: Column(

@@ -91,7 +91,7 @@ void confirmVote(
                   Response response = await votePolicy(pol_id, vote, userData);
                   Navigator.of(context).pop();
                   if (response.statusCode == 200) {
-                    showConfirmation(context, vote, userData);
+                    showConfirmation(context, userData);
                   }
                 },
                 child: const Text('Yes')),
@@ -108,7 +108,7 @@ void confirmVote(
       });
 }
 
-void showConfirmation(BuildContext context, String vote, Map userData) {
+void showConfirmation(BuildContext context,Map userData) {
   showDialog(
       context: context,
       builder: (context) {

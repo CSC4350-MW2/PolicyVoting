@@ -4,6 +4,7 @@ const firebase = require("firebase");
 const { StatusCodes } = require("http-status-codes");
 
 const addPolicy = async (req, res) => {
+  console.log("New policy recieved.");
   const { title, description } = req.body;
   try {
     db.collection("policies")
@@ -18,6 +19,7 @@ const addPolicy = async (req, res) => {
         res.status(StatusCodes.CREATED).json({ success: true, data: req.body });
       });
   } catch (err) {
+    console.log(err);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ success: false, message: "Failed to create policy" });

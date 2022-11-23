@@ -30,4 +30,14 @@ votePolicy(String pol_id, String vote, Map userData) async {
 
 getCompletedPolicies() async {}
 
-postPolicy() async {}
+postPolicy(String title, String description) async {
+  var url = Uri.http(host_url, '/policy');
+  Map data = {'title': title, 'description': description};
+
+  var body = json.encode(data);
+
+  var response = await http.post(url,
+      headers: {'Content-Type': "application/json"}, body: body);
+
+  return response;
+}
