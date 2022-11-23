@@ -1,6 +1,7 @@
 import 'package:client/screens/policy.dart';
 import 'package:flutter/material.dart';
 import 'package:client/style.dart';
+import 'package:client/screens/propose.dart';
 import '../utilites/policy.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,18 +24,39 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: stylesheet.seta(),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         foregroundColor: stylesheet.textcolor,
         centerTitle: true,
-        backgroundColor: stylesheet.buttons,
+        backgroundColor: Color.fromARGB(255, 49, 98, 222),
         title: Text(widget.title),
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProposeScreen(
+                            userData: widget.userData,
+                          )));
+            },
+            child: Text("Propose"),
+            style: ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll<Color>(
+                  Color.fromARGB(255, 0, 88, 160)),
+            ),
+          )
+        ],
       ),
       body: Center(
           child: Column(
         children: [
           for (int i = 0; i < widget.policies.length; i++)
             ListTile(
+                shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 2),
+                    borderRadius: BorderRadius.circular(20)),
                 onTap: () async {
                   var policy = widget.policies.elementAt(i);
                   Navigator.push(
@@ -46,18 +68,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               title: policy['title'],
                               description: policy['description'])));
                 },
-                tileColor: stylesheet.tilecolors,
+                tileColor: Color.fromARGB(255, 255, 255, 255),
                 title: Wrap(
                     alignment: WrapAlignment.spaceBetween,
                     direction: Axis.horizontal,
                     children: [
                       Text(widget.policies.elementAt(i)['title'].toString(),
                           style: stylesheet.suptext),
-                      Container(
-                          decoration:
-                              BoxDecoration(color: stylesheet.background),
-                          height: 1,
-                          width: double.infinity),
+                      Container(height: 1, width: double.infinity),
                     ]))
         ],
       )),

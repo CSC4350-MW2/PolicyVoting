@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         foregroundColor: stylesheet.textcolor,
         centerTitle: true,
-        backgroundColor: stylesheet.buttons,
+        backgroundColor: stylesheet.appBar,
         title: Text(widget.title),
       ),
       body: Center(
@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                       foregroundColor: MaterialStateProperty.all<Color>(
                           stylesheet.textcolor),
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          stylesheet.buttons))),
+                          stylesheet.appBar))),
               SizedBox(height: 25),
             ],
           ),

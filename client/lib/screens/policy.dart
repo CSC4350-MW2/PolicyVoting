@@ -31,15 +31,19 @@ class _PolicyScreenState extends State<PolicyScreen> {
       appBar: AppBar(
         foregroundColor: stylesheet.textcolor,
         centerTitle: true,
-        backgroundColor: stylesheet.buttons,
+        backgroundColor: stylesheet.appBar,
         title: Text(widget.title),
       ),
-      body: Column(
+      body: Center(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Card(child: Text(widget.description)),
-          ButtonBar(children: [
+          Align(alignment: Alignment.center, child: Text(widget.description)),
+          ButtonBar(
+            mainAxisSize: MainAxisSize.min, // this will take space as minimum as posible(to center) 
+            children: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -66,7 +70,7 @@ class _PolicyScreenState extends State<PolicyScreen> {
             ),
           ]),
         ],
-      ),
+      )),
     );
   }
 }
@@ -79,12 +83,15 @@ void confirmVote(
         return AlertDialog(
           title: Text('Are you sure you want to ${vote}?'),
           actions: [
-            ElevatedButton(
+            ButtonBar(
+              mainAxisSize: MainAxisSize.min, // this will take space as minimum as posible(to center)
+              children: [
+                     ElevatedButton(
                 onPressed: () async {
                   Response response = await votePolicy(pol_id, vote, userData);
                   Navigator.of(context).pop();
                   if (response.statusCode == 200) {
-                    showConfirmation(context, vote, userData);
+                    showConfirmation(context, userData);
                   }
                 },
                 child: const Text('Yes')),
@@ -93,12 +100,15 @@ void confirmVote(
                   Navigator.of(context).pop();
                 },
                 child: const Text('No'))
+              ],
+            )
+           
           ],
         );
       });
 }
 
-void showConfirmation(BuildContext context, String vote, Map userData) {
+void showConfirmation(BuildContext context,Map userData) {
   showDialog(
       context: context,
       builder: (context) {
