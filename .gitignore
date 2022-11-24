@@ -1,0 +1,3 @@
+client/android/app/google-services.json
+client/ios/firebase_app_id_file.json
+server/firebase/init.js
