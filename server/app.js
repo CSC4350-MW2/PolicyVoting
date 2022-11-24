@@ -1,13 +1,17 @@
 require("dotenv");
 const express = require("express");
 const cors = require("cors");
-const app = express();
 
+const app = express();
+require("./firebase/init")();
+
+const fcmRouter = require("./routes/fcm");
 const policyRouter = require("./routes/policy");
 const loginRouter = require("./routes/login");
 
 app.use(cors());
 app.use(express.json());
+app.use("/fcm", fcmRouter);
 app.use("/policy", policyRouter);
 app.use("/login", loginRouter);
 
