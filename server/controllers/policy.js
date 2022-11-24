@@ -1,4 +1,5 @@
 const db = require("../db/connect");
+const { newPolicyNotify } = require("../notification/notification");
 const firebase = require("firebase");
 
 const { StatusCodes } = require("http-status-codes");
@@ -17,6 +18,7 @@ const addPolicy = async (req, res) => {
       })
       .then((docRef) => {
         res.status(StatusCodes.CREATED).json({ success: true, data: req.body });
+        newPolicyNotify({ title, description });
       });
   } catch (err) {
     console.log(err);
