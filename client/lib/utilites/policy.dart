@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 
-var host_url = '10.0.2.2:3000';
+// var host_url = '10.0.2.2:3000';
+var host_url = '10.0.0.251:3000';
 
 getCurrentPolicies(var userData) async {
   print('User data: ${userData}');
@@ -28,7 +29,14 @@ votePolicy(String pol_id, String vote, Map userData) async {
   return response;
 }
 
-getCompletedPolicies() async {}
+getCompletedPolicies() async {
+  var url = Uri.http(host_url, '/policy/history/');
+  var response =
+      await http.get(url, headers: {"Content-Type": "application/json"});
+  var data = jsonDecode(response.body);
+  print(data['data']);
+  return data['data'];
+}
 
 postPolicy(String title, String description) async {
   var url = Uri.http(host_url, '/policy');

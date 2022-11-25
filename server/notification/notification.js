@@ -3,26 +3,16 @@ const { readFile, readFileSync } = require("fs");
 const path = require("node:path");
 const { getMessaging } = require("firebase-admin/messaging");
 
-const getTokens = () => {
-  readFile("../tokens.json", (error, data) => {
-    console.log("getTokensFunction:");
-    console.log(data);
-    return JSON.parse(data);
-  });
-};
 
-const newPolicyNotify = (policy) => {
-  console.log("Notification function callled");
-
+const sendNotification = (policy, message) => {
   const data = readFileSync(path.join(__dirname, "../tokens.json"));
-  console.log("Get tokens");
 
   const tokens = JSON.parse(data);
   console.log(tokens);
 
   const payload = {
     notification: {
-      title: "New policy available for voting",
+      title: message,
       body: policy.title,
     },
     tokens: tokens,
@@ -43,7 +33,7 @@ const newPolicyNotify = (policy) => {
       }
     });
 
-  console.log("Notification sent");
-};
+}
 
-module.exports = { newPolicyNotify };
+
+module.exports = { sendNotification };
