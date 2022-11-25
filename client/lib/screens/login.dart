@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:client/style.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({super.key, required this.title});
-
-  final String title;
+  LoginPage({
+    super.key,
+  });
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -30,78 +30,93 @@ class _LoginPageState extends State<LoginPage> {
         foregroundColor: stylesheet.textcolor,
         centerTitle: true,
         backgroundColor: stylesheet.appBar,
-        title: Text(widget.title),
+        title: Text("Login Page"),
       ),
       body: Center(
+          child: SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Username", style: stylesheet.subtitles),
+              Text(
+                "Username",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
               SizedBox(height: 10),
-              TextFormField(
-                  controller: _userID,
-                  style: stylesheet.normal,
-                  cursorColor: stylesheet.textcolor,
-                  decoration: InputDecoration(
-                      hintStyle: TextStyle(color: stylesheet.neutralbackground),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: stylesheet.textcolor),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: stylesheet.textcolor),
-                      ),
-                      labelStyle: new TextStyle(color: stylesheet.textcolor),
-                      iconColor: stylesheet.textcolor,
-                      fillColor: stylesheet.textcolor),
-                  validator: (String? value) {
-                    if (value!.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("Must enter username.",
-                              style: stylesheet.subtext),
-                          backgroundColor: stylesheet.buttons));
-                      return ("INVALID USERNAME");
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _userID.text = value!;
-                  }),
+              SizedBox(
+                width: 300,
+                child: TextFormField(
+                    controller: _userID,
+                    style: TextStyle(fontSize: 20),
+                    cursorColor: stylesheet.textcolor,
+                    decoration: InputDecoration(
+                        hintStyle:
+                            TextStyle(color: stylesheet.neutralbackground),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: stylesheet.textcolor),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: stylesheet.textcolor),
+                        ),
+                        labelStyle: new TextStyle(color: stylesheet.textcolor),
+                        iconColor: stylesheet.textcolor,
+                        fillColor: stylesheet.textcolor),
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Must enter username.",
+                                style: stylesheet.subtext),
+                            backgroundColor: stylesheet.buttons));
+                        return ("INVALID USERNAME");
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _userID.text = value!;
+                    }),
+              ),
               SizedBox(height: 15),
-              Text("Password", style: stylesheet.subtitles),
+              Text(
+                "Password",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
               SizedBox(height: 10),
-              TextFormField(
-                  controller: _passwordID,
-                  style: stylesheet.normal,
-                  cursorColor: stylesheet.textcolor,
-                  decoration: InputDecoration(
-                      hintStyle: TextStyle(color: stylesheet.neutralbackground),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: stylesheet.textcolor),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: stylesheet.textcolor),
-                      ),
-                      labelStyle: new TextStyle(color: stylesheet.textcolor),
-                      iconColor: stylesheet.textcolor,
-                      fillColor: stylesheet.textcolor),
-                  validator: (String? value) {
-                    if (value!.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("Must enter password.",
-                              style: stylesheet.subtext),
-                          backgroundColor: stylesheet.buttons));
-                      return ("INVALID PASSWORD");
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _userID.text = value!;
-                  }),
+              SizedBox(
+                width: 300,
+                child: TextFormField(
+                    controller: _passwordID,
+                    style: TextStyle(fontSize: 20),
+                    cursorColor: stylesheet.textcolor,
+                    decoration: InputDecoration(
+                        hintStyle:
+                            TextStyle(color: stylesheet.neutralbackground),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: stylesheet.textcolor),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: stylesheet.textcolor),
+                        ),
+                        labelStyle: new TextStyle(color: stylesheet.textcolor),
+                        iconColor: stylesheet.textcolor,
+                        fillColor: stylesheet.textcolor),
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Must enter password.",
+                                style: stylesheet.subtext),
+                            backgroundColor: stylesheet.buttons));
+                        return ("INVALID PASSWORD");
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _userID.text = value!;
+                    }),
+              ),
               SizedBox(height: 20),
-              TextButton(
-                  child: Text("Login", style: stylesheet.normal),
+              OutlinedButton(
+                  child: Text("Login", style: TextStyle(fontSize: 25)),
                   onPressed: () async {
                     signOn(context);
                   },
@@ -110,13 +125,13 @@ class _LoginPageState extends State<LoginPage> {
                           MaterialStateProperty.all<Size>(Size(160, 40)),
                       foregroundColor: MaterialStateProperty.all<Color>(
                           stylesheet.textcolor),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          stylesheet.appBar))),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(stylesheet.appBar))),
               SizedBox(height: 25),
             ],
           ),
         ),
-      ),
+      )),
     );
   }
 
