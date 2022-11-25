@@ -154,8 +154,8 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text("Incorrect username or password",
-                style: stylesheet.subtext),
-            backgroundColor: stylesheet.buttons));
+                style: TextStyle(fontSize: 20, color: Colors.black)),
+            backgroundColor: stylesheet.button));
       }
     }
   }
