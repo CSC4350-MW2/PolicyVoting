@@ -1,5 +1,5 @@
 const db = require("../db/connect");
-const { newPolicyNotify } = require("../notification/notification");
+const { sendNotification } = require("../notification/notification");
 const firebase = require("firebase");
 
 const { StatusCodes } = require("http-status-codes");
@@ -18,7 +18,7 @@ const addPolicy = async (req, res) => {
       })
       .then((docRef) => {
         res.status(StatusCodes.CREATED).json({ success: true, data: req.body });
-        newPolicyNotify({ title, description });
+        sendNotification({ title, description }, "New policy available for voting.");
       });
   } catch (err) {
     console.log(err);
@@ -63,6 +63,8 @@ const votePolicy = async (req, res) => {
     });
 
     const policyData = await policy.get();
+    const title = policyData.data()['title'];
+    const description = policyData.data()['description'];
     const accepts = policyData.data()['accept'];
     const rejects = policyData.data()['reject'];
 
@@ -78,10 +80,10 @@ const votePolicy = async (req, res) => {
     console.log(`Num of users: ${count}`)
 
     if (count == Number(accepts) + Number(rejects)) {
-      console.log("Policy is complete");
       await policy.update({
         status: "COMPLETE"
       })
+      sendNotification({title,description }, "Policy voting results available.");
     }
 
     res.status(StatusCodes.OK).json({ success: true, data: policyData.data() });
