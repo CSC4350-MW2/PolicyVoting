@@ -48,14 +48,13 @@ const votePolicy = async (req, res) => {
     // Get user
     const user = await db.collection("users").doc(userId);
     const policy = await db.collection("policies").doc(pol_id);
-    // if (policy.data() == null) throw Error();
 
     if (vote == "accept") {
-      const result = await policy.update({
+      await policy.update({
         accept: firebase.firestore.FieldValue.increment(1),
       });
     } else if (vote == "reject") {
-      const result = await policy.update({
+      await policy.update({
         reject: firebase.firestore.FieldValue.increment(1),
       });
     }
@@ -63,8 +62,29 @@ const votePolicy = async (req, res) => {
       policies: firebase.firestore.FieldValue.arrayUnion(pol_id),
     });
 
-    const data = await policy.get();
-    res.status(StatusCodes.OK).json({ success: true, data: data.data() });
+    const policyData = await policy.get();
+    const accepts = policyData.data()['accept'];
+    const rejects = policyData.data()['reject'];
+
+    console.log(`Accept: ${accepts}`)
+    console.log(`Reject: ${rejects}`)
+
+    const userRef = db.collection('users');
+    const users = await userRef.get();
+
+    // Count num of users
+    var count = 0;
+    users.forEach((user)=>{count+=1})
+    console.log(`Num of users: ${count}`)
+
+    if (count == Number(accepts) + Number(rejects)) {
+      console.log("Policy is complete");
+      await policy.update({
+        status: "COMPLETE"
+      })
+    }
+
+    res.status(StatusCodes.OK).json({ success: true, data: policyData.data() });
   } catch (err) {
     console.log(err);
     res
