@@ -9,6 +9,7 @@ const {
   votePolicy,
 } = require("../controllers/policy");
 
+// All preceded by: "/policy"
 router.route("/").post(addPolicy);
 router.route("/").get(getAllPolicies);
 router.route("/history").get(getHistory);

@@ -1,4 +1,5 @@
 client/android/app/google-services.json
 client/ios/firebase_app_id_file.json
 server/firebase/init.js
-server/policyvoter-a5d55-26689e550ae6.json
+server/tokens.json
+server/policyvoter-a5d55-firebase-adminsdk-75dd5-9855bd0717.json

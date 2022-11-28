@@ -1,7 +1,6 @@
 const db = require("../db/connect");
 const { sendNotification } = require("../notification/notification");
 const firebase = require("firebase");
-
 const { StatusCodes } = require("http-status-codes");
 
 const addPolicy = async (req, res) => {
@@ -49,6 +48,7 @@ const votePolicy = async (req, res) => {
     const user = await db.collection("users").doc(userId);
     const policy = await db.collection("policies").doc(pol_id);
 
+    // Increment appropriate field
     if (vote == "accept") {
       await policy.update({
         accept: firebase.firestore.FieldValue.increment(1),
@@ -68,9 +68,6 @@ const votePolicy = async (req, res) => {
     const accepts = policyData.data()['accept'];
     const rejects = policyData.data()['reject'];
 
-    console.log(`Accept: ${accepts}`)
-    console.log(`Reject: ${rejects}`)
-
     const userRef = db.collection('users');
     const users = await userRef.get();
 
@@ -78,7 +75,9 @@ const votePolicy = async (req, res) => {
     var count = 0;
     users.forEach((user)=>{count+=1})
     console.log(`Num of users: ${count}`)
-
+  
+    // Check if voting is complete
+    // If total votes is equal to total users, voting is complete
     if (count == Number(accepts) + Number(rejects)) {
       await policy.update({
         status: "COMPLETE"
