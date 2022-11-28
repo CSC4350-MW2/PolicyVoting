@@ -27,12 +27,12 @@ class _PolicyScreenState extends State<PolicyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: stylesheet.seta(),
+      backgroundColor: stylesheet.background,
       appBar: AppBar(
-        foregroundColor: stylesheet.textcolor,
+    
         centerTitle: true,
         backgroundColor: stylesheet.appBar,
-        title: Text(widget.title),
+        title: Text(widget.title,style:stylesheet.titles),
       ),
       body: Center(
           child: Column(
@@ -40,33 +40,42 @@ class _PolicyScreenState extends State<PolicyScreen> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Align(alignment: Alignment.center, child: Text(widget.description)),
+          Align(alignment: Alignment.center, child: Text("Details: "+widget.description,style:stylesheet.ntitles,)),
+           SizedBox(height:50),
+             Align(alignment: Alignment.center, child: Text("How do you vote?",style:stylesheet.ntitles,)),
           ButtonBar(
             mainAxisSize: MainAxisSize.min, // this will take space as minimum as posible(to center) 
             children: [
+             
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-              ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+              style: ButtonStyle(
+                      minimumSize:
+                          MaterialStateProperty.all<Size>(Size(150, 50)),
+                      foregroundColor: MaterialStateProperty.all<Color>(
+                          stylesheet.textcolor),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(stylesheet.buttons)),
               onPressed: () {
                 widget.vote = "accept";
                 confirmVote(
                     context, widget.pol_id, widget.vote, widget.userData);
               },
-              child: const Text('Accept'),
+              child: Text('Accept',style: stylesheet.titles,),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-              ).copyWith(elevation: ButtonStyleButton.allOrNull(0.0)),
+              style: ButtonStyle(
+                      minimumSize:
+                          MaterialStateProperty.all<Size>(Size(150, 50)),
+                      foregroundColor: MaterialStateProperty.all<Color>(
+                          stylesheet.textcolor),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(stylesheet.buttons)),
               onPressed: () {
                 widget.vote = "reject";
                 confirmVote(
                     context, widget.pol_id, widget.vote, widget.userData);
               },
-              child: const Text('Reject'),
+              child: Text('Reject',style: stylesheet.titles,),
             ),
           ]),
         ],
@@ -83,10 +92,17 @@ void confirmVote(
         return AlertDialog(
           title: Text('Are you sure you want to ${vote}?'),
           actions: [
-            ButtonBar(
+            Center(
+            child:ButtonBar(
               mainAxisSize: MainAxisSize.min, // this will take space as minimum as posible(to center)
               children: [
                      ElevatedButton(
+                      style: ButtonStyle(
+                    
+                      foregroundColor: MaterialStateProperty.all<Color>(
+                          stylesheet.textcolor),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(stylesheet.buttons)),
                 onPressed: () async {
                   Response response = await votePolicy(pol_id, vote, userData);
                   Navigator.of(context).pop();
@@ -94,13 +110,20 @@ void confirmVote(
                     showConfirmation(context, userData);
                   }
                 },
-                child: const Text('Yes')),
+                 child: Text('Yes',style: stylesheet.small)),
             ElevatedButton(
+              style: ButtonStyle(
+                    
+                      foregroundColor: MaterialStateProperty.all<Color>(
+                          stylesheet.textcolor),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(stylesheet.buttons)),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text('No'))
+                 child: Text('No',style: stylesheet.small))
               ],
+            )
             )
            
           ],
@@ -127,7 +150,7 @@ void showConfirmation(BuildContext context,Map userData) {
                               userData: userData,
                               policies: policies)));
                 },
-                child: const Text('Ok')),
+                child: Text('Ok')),
           ],
         );
       });

@@ -22,10 +22,12 @@ class _ProposeScreenState extends State<ProposeScreen> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        foregroundColor: stylesheet.textcolor,
         centerTitle: true,
         backgroundColor: Color.fromARGB(255, 49, 98, 222),
-        title: Text("Propose New Policy"),
+        title: Text(
+          "Propose Policy",
+          style: stylesheet.titles,
+        ),
       ),
       body: Center(
           child: Column(
@@ -52,11 +54,21 @@ class _ProposeScreenState extends State<ProposeScreen> {
             height: 15,
           ),
           ElevatedButton(
-              onPressed: () {
-                confirmSubmission(context, titleController.text,
-                    descrController.text, widget.userData);
-              },
-              child: Text("Submit"))
+            style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all<Size>(Size(200, 70)),
+                foregroundColor:
+                    MaterialStateProperty.all<Color>(stylesheet.textcolor),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(stylesheet.buttons)),
+            onPressed: () {
+              confirmSubmission(context, titleController.text,
+                  descrController.text, widget.userData);
+            },
+            child: Text(
+              "Submit",
+              style: stylesheet.titles,
+            ),
+          )
         ],
       )),
     );
@@ -71,25 +83,40 @@ void confirmSubmission(
         return AlertDialog(
           title: Text('Are you sure you want to submit?'),
           actions: [
-            ButtonBar(
-              mainAxisSize: MainAxisSize
-                  .min, // this will take space as minimum as posible(to center)
-              children: [
-                ElevatedButton(
-                    onPressed: () async {
-                      var response = await postPolicy(title, description);
-                      Navigator.of(context).pop();
-                      if (response.statusCode == 201) {
-                        showConfirmation(context, userData);
-                      }
-                    },
-                    child: const Text('Yes')),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('No'))
-              ],
+            Center(
+              child: ButtonBar(
+                mainAxisSize: MainAxisSize
+                    .min, // this will take space as minimum as posible(to center)
+                children: [
+                  ElevatedButton(
+                      style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all<Color>(
+                              stylesheet.textcolor),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              stylesheet.buttons)),
+                      onPressed: () async {
+                        var response = await postPolicy(title, description);
+                        Navigator.of(context).pop();
+                        if (response.statusCode == 201) {
+                          showConfirmation(context, userData);
+                        }
+                      },
+                      child: Text(
+                        'Yes',
+                        style: stylesheet.small,
+                      )),
+                  ElevatedButton(
+                      style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all<Color>(
+                              stylesheet.textcolor),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              stylesheet.buttons)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('No', style: stylesheet.small))
+                ],
+              ),
             )
           ],
         );

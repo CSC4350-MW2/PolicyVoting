@@ -25,12 +25,13 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: stylesheet.seta(),
+      backgroundColor: stylesheet.background,
       appBar: AppBar(
         foregroundColor: stylesheet.textcolor,
         centerTitle: true,
         backgroundColor: stylesheet.appBar,
-        title: Text("Login Page"),
+        title: Text("Login Page", style: stylesheet.titles),
+        //Updated Title
       ),
       body: Center(
           child: SingleChildScrollView(
@@ -116,17 +117,17 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 20),
               OutlinedButton(
-                  child: Text("Login", style: TextStyle(fontSize: 25)),
+                  child: Text("Login", style: stylesheet.subtext),
                   onPressed: () async {
                     signOn(context);
                   },
                   style: ButtonStyle(
                       minimumSize:
-                          MaterialStateProperty.all<Size>(Size(160, 40)),
+                          MaterialStateProperty.all<Size>(Size(200, 70)),
                       foregroundColor: MaterialStateProperty.all<Color>(
                           stylesheet.textcolor),
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(stylesheet.appBar))),
+                          MaterialStateProperty.all<Color>(stylesheet.buttons))),
               SizedBox(height: 25),
             ],
           ),

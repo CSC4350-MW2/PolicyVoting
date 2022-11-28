@@ -7,8 +7,7 @@ Future<void> generateRegistrationToken() async {
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
   final fcmToken = await FirebaseMessaging.instance.getToken();
 
-  // var host_url = '10.0.2.2:3000';
-  var host_url = '10.0.0.251:3000';
+  var host_url = '139.144.52.196:3000';
 
   var url = Uri.http(host_url, '/fcm');
   Map data = {"token": fcmToken};
